@@ -3,7 +3,7 @@ import { ChatMessageProps } from "../../types";
 
 const ChatMessage: React.FC<ChatMessageProps> = ({ message, currentUser }) => {
   console.log(message, "message");
-  const isSentByCurrentUser = message.sender.id === currentUser?.id;
+  const isSentByCurrentUser = message.sender?.id === currentUser?.id;
   const alignment = isSentByCurrentUser ? "items-end" : "items-start";
   const bgColor = isSentByCurrentUser
     ? "bg-blue-500 text-white"
