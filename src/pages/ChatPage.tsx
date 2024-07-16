@@ -23,7 +23,7 @@ const ChatPage: React.FC = () => {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([
+  const [teamMembers] = useState<TeamMember[]>([
     // Add more team members
     {
       id: "2",

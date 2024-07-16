@@ -58,7 +58,7 @@ export interface AppLayoutProps {
 
 export interface Message {
   id: string;
-  sender: User;
+  sender: User | null;
   content: string;
   timestamp: string;
   isSent: boolean;

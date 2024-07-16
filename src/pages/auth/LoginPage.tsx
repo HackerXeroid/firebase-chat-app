@@ -3,7 +3,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -14,9 +13,6 @@ import { auth } from "@/config/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { FirebaseError } from "firebase/app";
-import { getFriendlyErrorMessageForLogin } from "@/components/utils/firebaseUtils";
 
 const loginHandler = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
@@ -37,32 +33,6 @@ const loginHandler = async (e: React.FormEvent<HTMLFormElement>) => {
       variant: "destructive",
       title: "Error",
       description: "Invalid email or password",
-    });
-  }
-};
-
-const googleLoginHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
-  e.preventDefault();
-
-  const provider = new GoogleAuthProvider();
-  try {
-    await signInWithPopup(auth, provider);
-    toast({
-      variant: "default",
-      title: "Hurray!",
-      description: "Login successful",
-    });
-  } catch (error: unknown) {
-    let errorMessage: string;
-    if (error instanceof Error) {
-      if (error instanceof FirebaseError)
-        errorMessage = getFriendlyErrorMessageForLogin(error);
-      else errorMessage = error.message;
-    } else errorMessage = "An error occurred";
-    toast({
-      variant: "destructive",
-      title: "Error",
-      description: errorMessage,
     });
   }
 };
