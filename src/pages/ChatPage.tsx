@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import AppLayout from "../components/layout/AppLayout";
 import MessagesSidebar from "../components/messages/MessagesSidebar";
 import DirectorySidebar from "../components/directory/DirectorySidebar";
@@ -6,25 +6,25 @@ import ChatHeader from "../components/chat/ChatHeader";
 import ChatMessage from "../components/chat/ChatMessage";
 import ChatInput from "../components/chat/ChatInput";
 import { User, Message, TeamMember, ChatPartner } from "../types";
-import { auth } from "@/config/firebase";
 import Loader from "@/components/loader";
-import { signOut } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
 import { generateAvatarUrl } from "@/components/utils";
 
 const logOutHandler = async () => {
   try {
-    await signOut(auth);
   } catch (error: unknown) {}
 };
 
 const ChatPage: React.FC = () => {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [currentUser] = useState<User | null>({
+    id: "1",
+    name: "John Doe",
+    avatarUrl: `https://api.multiavatar.com/John Doe-1.png`,
+    isOnline: true,
+  });
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading] = useState(false);
 
   const [teamMembers] = useState<TeamMember[]>([
-    // Add more team members
     {
       id: "2",
       name: "Kathleen Lang",
@@ -70,7 +70,6 @@ const ChatPage: React.FC = () => {
   ]);
 
   const [chatPartners, setChatPartners] = useState<ChatPartner[]>([
-    // Add more messages
     {
       id: "2",
       name: "Kathleen Lang",
@@ -115,30 +114,6 @@ const ChatPage: React.FC = () => {
 
   const [activeChatPartner, setActiveChatPartner] =
     useState<ChatPartner | null>(null);
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    console.log(auth.currentUser, "from chat page");
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user!) {
-        console.log(user);
-        console.log(user.uid, user.displayName, user.photoURL);
-        setCurrentUser({
-          id: user.uid,
-          name: user.displayName || "",
-          avatarUrl: user.photoURL || "",
-          isOnline: true,
-        });
-        setIsLoading(false);
-      } else {
-        setCurrentUser(null);
-        navigate("/login");
-      }
-    });
-
-    return unsubscribe;
-  }, []);
 
   const currentConversation = activeChatPartner?.conversation || [];
 

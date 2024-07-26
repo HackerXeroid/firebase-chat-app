@@ -8,45 +8,9 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { toast } from "@/components/ui/use-toast";
-import { auth } from "@/config/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-
-const loginHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-
-  try {
-    const [email, password] = Array.from(e.currentTarget.elements).map(
-      (el) => (el as HTMLInputElement).value
-    );
-
-    await signInWithEmailAndPassword(auth, email, password);
-    toast({
-      variant: "default",
-      title: "Hurray!",
-      description: "Login successful",
-    });
-  } catch (error) {
-    toast({
-      variant: "destructive",
-      title: "Error",
-      description: "Invalid email or password",
-    });
-  }
-};
+import { Link } from "react-router-dom";
 
 export function LoginPage() {
-  const navigate = useNavigate();
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) navigate("/");
-    });
-
-    return unsubscribe;
-  }, []);
-
   return (
     <div className="w-full h-screen flex justify-center items-center">
       <Card className="w-full max-w-sm">
@@ -57,7 +21,7 @@ export function LoginPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="">
-          <form onSubmit={loginHandler} className="grid gap-4">
+          <form onSubmit={() => {}} className="grid gap-4">
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -78,13 +42,6 @@ export function LoginPage() {
             </div>
             <div className="flex flex-col border w-full gap-4">
               <Button className="w-full">Sign in</Button>
-              {/* <Button
-                variant="outline"
-                className="w-full"
-                onClick={googleLoginHandler}
-              >
-                Login with Google
-              </Button> */}
             </div>
           </form>
           <div className="mt-4 text-center text-sm">
